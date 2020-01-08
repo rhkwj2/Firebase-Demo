@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import Firebase
 
 class SignUpViewController: UIViewController {
 
@@ -100,9 +101,14 @@ class SignUpViewController: UIViewController {
          showError(error!)
         } else {
             
+            //create cleaned versions of the data
+            let firstName = firstnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let lastName = lastnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+            
             // create the user
-            Auth.auth().createUser(withEmail: <#T##String#>, password: <#T##String#>) { (result, err) in
-                <#code#>
+            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
                 
                 //check for errors
                 if err != nil {
@@ -110,12 +116,22 @@ class SignUpViewController: UIViewController {
                     self.showError("Error creating user")
                 } else {
                     //user was created sucessfully, now store the first name and last name
-                    
+                    let db = Firestore.firestore()
+                    db.collection("users").addDocument(data: ["firstname" : firstName, "lastname" : lastName, "uid" : result!.user.uid ]) { (error) in
+                        
+                        if error != nil {
+                            //show error message
+                            self.showError("Error saving user data")
+                        }
+                        
+                    }
+                //Transition to the home screen
+                    self.transitionToHome()
                 }
                 
+                
             }
-            //Transition to the home screen
-                   
+           
             
         }
         
@@ -129,5 +145,12 @@ class SignUpViewController: UIViewController {
                    errorLabel.alpha = 1
                    
     }
-    
+    func transitionToHome(){
+        
+        let homeViewController = storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+        
+        view.window?.rootViewController = homeViewController
+        view.window?.makeKeyAndVisible()
+        
+    }
 }

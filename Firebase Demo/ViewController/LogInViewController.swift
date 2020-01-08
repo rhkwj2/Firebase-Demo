@@ -7,14 +7,15 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LogInViewController: UIViewController {
     
     
-    @IBOutlet weak var firstnameTextField: UITextField!
+    @IBOutlet weak var emailTextField: UITextField!
     
     
-    @IBOutlet weak var lastnameTextField: UITextField!
+    @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var loginButton: UIButton!
     
@@ -37,9 +38,9 @@ class LogInViewController: UIViewController {
         
         //style the elements
         
-        Utilities.styleTextField(firstnameTextField)
+        Utilities.styleTextField(emailTextField)
         
-        Utilities.styleTextField(lastnameTextField)
+        Utilities.styleTextField(passwordTextField)
         
         Utilities.styleFilledButton(loginButton)
         
@@ -61,6 +62,32 @@ class LogInViewController: UIViewController {
     
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
+        
+        // ToDo : Validate thext Fields
+        
+        //Create Cleaned versions of the text filed
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        
+        
+        //signing in the user
+        Auth.auth().signIn(withEmail: email, password: password) { (result, error) in
+            if error != nil {
+                //Couldn`t sing in
+                self.errorLabel.text = error!.localizedDescription
+                self.errorLabel.alpha = 1
+            }
+            else {
+                let homeViewController = self.storyboard?.instantiateViewController(identifier: Constants.Storyboard.homeViewController) as? HomeViewController
+                
+                self.view.window?.rootViewController = homeViewController
+                self.view.window?.makeKeyAndVisible()
+                
+                
+            }
+        }
     }
     
 }
