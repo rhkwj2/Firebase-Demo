@@ -94,48 +94,40 @@ class SignUpViewController: UIViewController {
         //validate the fields
         let error = validateFields()
         
-        if error != nil {
-            
-            //there`s something wrong with the feilds, show error message
-            
-         showError(error!)
-        } else {
-            
-            //create cleaned versions of the data
-            let firstName = firstnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let lastName = lastnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-            
-            // create the user
-            Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
-                
-                //check for errors
-                if err != nil {
-                    //there was an error creating the user
-                    self.showError("Error creating user")
-                } else {
-                    //user was created sucessfully, now store the first name and last name
-                    let db = Firestore.firestore()
-                    db.collection("users").addDocument(data: ["firstname" : firstName, "lastname" : lastName, "uid" : result!.user.uid ]) { (error) in
-                        
-                        if error != nil {
-                            //show error message
-                            self.showError("Error saving user data")
-                        }
-                        
-                    }
-                //Transition to the home screen
-                    self.transitionToHome()
-                }
-                
-                
-            }
-           
-            
+        if let error = error {
+            showError(error)
+            return
         }
         
-      
+        //create cleaned versions of the data
+        let firstName = firstnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastName = lastnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        // create the user
+        Auth.auth().createUser(withEmail: email, password: password) { (result, err) in
+            
+            //check for errors
+            guard error == nil else {
+                self.showError("Error creating user")
+                return
+            }
+            
+            //user was created sucessfully, now store the first name and last name
+            let db = Firestore.firestore()
+            db.collection("users").addDocument(data: ["firstname" : firstName, "lastname" : lastName, "uid" : result!.uid ]) { (error) in
+                
+                if error != nil {
+                    //show error message
+                    self.showError("Error saving user data")
+                    return
+                }
+                
+            }
+            //Transition to the home screen
+            self.transitionToHome()
+        }
     }
     
     func  showError(_ message:String) {

@@ -97,6 +97,9 @@
                                             <constraint firstAttribute="height" constant="50" id="FAd-2l-bFI"/>
                                         </constraints>
                                         <state key="normal" title="Sign Up"/>
+                                        <connections>
+                                            <action selector="signUpTapped:" destination="D52-16-wy7" eventType="touchUpInside" id="63d-pS-WZs"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TgY-Sc-rmk">
                                         <rect key="frame" x="0.0" y="350" width="295" height="20.5"/>
