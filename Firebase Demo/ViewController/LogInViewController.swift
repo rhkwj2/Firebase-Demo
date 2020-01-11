@@ -13,14 +13,8 @@ class LogInViewController: UIViewController {
     
     
     @IBOutlet weak var emailTextField: UITextField!
-    
-    
     @IBOutlet weak var passwordTextField: UITextField!
-    
     @IBOutlet weak var loginButton: UIButton!
-    
-    
-    
     @IBOutlet weak var errorLabel: UILabel!
     
     override func viewDidLoad() {
@@ -37,16 +31,9 @@ class LogInViewController: UIViewController {
         errorLabel.alpha = 0
         
         //style the elements
-        
         Utilities.styleTextField(emailTextField)
-        
         Utilities.styleTextField(passwordTextField)
-        
         Utilities.styleFilledButton(loginButton)
-        
-        
-        
-        
     }
 
     /*
@@ -69,7 +56,6 @@ class LogInViewController: UIViewController {
         let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
         let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        
         
         
         //signing in the user

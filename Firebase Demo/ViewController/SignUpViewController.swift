@@ -14,24 +14,11 @@ class SignUpViewController: UIViewController {
 
     
     @IBOutlet weak var firstnameTextField: UITextField!
-    
-    
     @IBOutlet weak var lastnameTextField: UITextField!
-    
-    
-    
     @IBOutlet weak var emailTextField: UITextField!
-    
-    
     @IBOutlet weak var passwordTextField: UITextField!
-    
-    
     @IBOutlet weak var singUpButton: UIButton!
-    
-    
-    
     @IBOutlet weak var errorLabel: UILabel!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,7 +72,6 @@ class SignUpViewController: UIViewController {
             
         }
     
-        
         return nil
     }
     
